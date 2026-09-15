@@ -1,3 +1,4 @@
+// just to get the theme
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
