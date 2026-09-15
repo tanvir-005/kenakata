@@ -3,6 +3,7 @@ import { Search, ShoppingBag, User } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { CartBadge } from "@/components/cart/cart-badge";
 
 export function Header() {
   return (
@@ -58,13 +59,7 @@ export function Header() {
               <User className="h-4 w-4" />
             </Link>
 
-            <Link
-              href="/cart"
-              aria-label="Shopping cart"
-              className="relative inline-flex h-9 w-9 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-950 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white"
-            >
-              <ShoppingBag className="h-4 w-4" />
-            </Link>
+            <CartBadge />
           </div>
         </div>
       </Container>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProduct } from "@/lib/api/products";
 import { Container } from "@/components/ui/container";
+import { AddToCartButton } from "@/components/cart/add-to-cart-button";
 
 interface ProductPageProps {
   params: Promise<{
@@ -82,12 +83,7 @@ export default async function ProductPage({
                 </p>
               </div>
 
-              <button
-                type="button"
-                className="mt-8 h-12 rounded-full bg-neutral-950 px-6 text-sm font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
-              >
-                Add to cart
-              </button>
+              <AddToCartButton product={product} />
             </div>
           </div>
         </Container>
