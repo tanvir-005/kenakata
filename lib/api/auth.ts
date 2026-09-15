@@ -1,4 +1,4 @@
-import type { AuthSession, LoginResponse, User } from "@/types";
+import type { LoginResponse, User } from "@/types";
 import { apiClient } from "./client";
 
 interface LoginCredentials {

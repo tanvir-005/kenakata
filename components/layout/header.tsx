@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/container";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { CartBadge } from "@/components/cart/cart-badge";
+import { AuthActions } from "@/components/auth/auth-actions";
 
 export function Header() {
   return (
@@ -50,14 +51,7 @@ export function Header() {
             </Link>
 
             <ThemeToggle />
-
-            <Link
-              href="/login"
-              aria-label="Account"
-              className="hidden h-9 w-9 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-950 sm:inline-flex dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white"
-            >
-              <User className="h-4 w-4" />
-            </Link>
+            <AuthActions />
 
             <CartBadge />
           </div>

@@ -2,7 +2,17 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies and create your local environment file:
+
+```bash
+cp .env.example .env.local
+npm install
+```
+
+Set `NEXT_PUBLIC_API_URL` to the Platzi API URL. The `TEST_*` values are only
+used by the functionality test script; keep test credentials in `.env.local`.
+
+Run the development server:
 
 ```bash
 npm run dev
@@ -15,6 +25,12 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+Run the functionality checks with the same local environment:
+
+```bash
+./scripts/test.sh
+```
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
