@@ -40,7 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# exclude env files
-.env*
-# but not env example
+# commit the env example
 !.env.example
+
+scripts/*
+!scripts/test.sh

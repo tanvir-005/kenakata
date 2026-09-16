@@ -16,7 +16,7 @@ import {
 } from "@/reducers/cart-reducer";
 
 interface CartContextValue {
-  items: typeof initialCartState.items;
+  items: CartItem[];
   itemCount: number;
   subtotal: number;
   addItem: (product: Product) => void;

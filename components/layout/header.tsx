@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search, ShoppingBag, User } from "lucide-react";
+import { Search } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeToggle } from "@/components/theme/theme-toggle";

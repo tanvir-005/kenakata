@@ -23,7 +23,7 @@ export function CartItem({ item }: CartItemProps) {
     <article className="flex gap-4 border-b border-neutral-200 py-6 dark:border-neutral-800">
       <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900">
         <ProductImage
-          src={item.product.images[0] ?? ""}
+          src={image ?? ""}
           alt={item.product.title}
         />
       </div>
