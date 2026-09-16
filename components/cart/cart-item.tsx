@@ -1,9 +1,10 @@
 "use client";
 
-import Image from "next/image";
+import { ProductImage } from "@/components/product/product-image";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import type { CartItem as CartItemType } from "@/types";
 import { useCart } from "@/context/cart-context";
+import Link from "next/link";
 
 interface CartItemProps {
   item: CartItemType;
@@ -21,19 +22,10 @@ export function CartItem({ item }: CartItemProps) {
   return (
     <article className="flex gap-4 border-b border-neutral-200 py-6 dark:border-neutral-800">
       <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900">
-        {image ? (
-          <Image
-            src={image}
-            alt={item.product.title}
-            fill
-            sizes="96px"
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center text-xs text-neutral-400">
-            No image
-          </div>
-        )}
+        <ProductImage
+          src={item.product.images[0] ?? ""}
+          alt={item.product.title}
+        />
       </div>
 
       <div className="min-w-0 flex-1">
@@ -44,7 +36,12 @@ export function CartItem({ item }: CartItemProps) {
             </p>
 
             <h2 className="mt-1 text-sm font-medium">
-              {item.product.title}
+              <Link
+                href={`/product/${item.product.id}`}
+                className="transition-colors hover:text-neutral-500"
+              >
+                {item.product.title}
+              </Link>
             </h2>
           </div>
 

@@ -6,9 +6,10 @@ import {
   useEffect,
   useMemo,
   useReducer,
+  useState,
 } from "react";
 import type { ReactNode } from "react";
-import type { Product } from "@/types";
+import type { CartItem, Product } from "@/types";
 import {
   cartReducer,
   initialCartState,
@@ -31,6 +32,32 @@ const CartContext = createContext<CartContextValue | undefined>(
 
 const CART_STORAGE_KEY = "kenakata-cart";
 
+function isStoredCartItem(value: unknown): value is CartItem {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  if (!("product" in value) || !("quantity" in value)) {
+    return false;
+  }
+
+  const item = value as {
+    product: unknown;
+    quantity: unknown;
+  };
+
+  return (
+    typeof item.product === "object" &&
+    item.product !== null &&
+    "id" in item.product &&
+    typeof item.product.id === "number" &&
+    Number.isInteger(item.product.id) &&
+    typeof item.quantity === "number" &&
+    Number.isInteger(item.quantity) &&
+    item.quantity > 0
+  );
+}
+
 interface CartProviderProps {
   children: ReactNode;
 }
@@ -42,57 +69,50 @@ export function CartProvider({
     cartReducer,
     initialCartState,
   );
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    const storedCart = localStorage.getItem(
-      CART_STORAGE_KEY,
-    );
+    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
 
-    if (!storedCart) {
-      return;
-    }
+    if (storedCart) {
+      try {
+        const parsedCart = JSON.parse(storedCart);
 
-    try {
-      const parsedCart = JSON.parse(storedCart);
+        if (
+          parsedCart &&
+          Array.isArray(parsedCart.items)
+        ) {
+          const items = parsedCart.items.filter(
+            isStoredCartItem,
+          ) as CartItem[];
 
-      if (
-        parsedCart &&
-        Array.isArray(parsedCart.items)
-      ) {
-        parsedCart.items.forEach((item: unknown) => {
-          if (
-            typeof item === "object" &&
-            item !== null &&
-            "product" in item &&
-            "quantity" in item
-          ) {
-            const cartItem = item as {
-              product: Product;
-              quantity: number;
-            };
-
-            for (let i = 0; i < cartItem.quantity; i += 1) {
-              dispatch({
-                type: "ADD_ITEM",
-                payload: {
-                  product: cartItem.product,
-                },
-              });
-            }
-          }
-        });
+          dispatch({
+            type: "HYDRATE_CART",
+            payload: { items },
+          });
+        }
+      } catch {
+        localStorage.removeItem(CART_STORAGE_KEY);
       }
-    } catch {
-      localStorage.removeItem(CART_STORAGE_KEY);
     }
+
+    const timeoutId = window.setTimeout(() => {
+      setIsHydrated(true);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
     localStorage.setItem(
       CART_STORAGE_KEY,
       JSON.stringify(state),
     );
-  }, [state]);
+  }, [state, isHydrated]);
 
   const value = useMemo<CartContextValue>(() => {
     const itemCount = state.items.reduce(
@@ -100,11 +120,11 @@ export function CartProvider({
       0,
     );
 
-    const subtotal = state.items.reduce(
-      (total, item) =>
-        total + item.product.price * item.quantity,
-      0,
-    );
+  const subtotal = state.items.reduce(
+    (total, item) =>
+      total + item.product.price * item.quantity,
+    0,
+  );
 
     return {
       items: state.items,

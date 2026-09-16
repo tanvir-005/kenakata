@@ -6,12 +6,28 @@ interface LoginCredentials {
   password: string;
 }
 
+interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+  avatar: string;
+}
+
 export async function login(
   credentials: LoginCredentials,
 ): Promise<LoginResponse> {
   return apiClient<LoginResponse>("/auth/login", {
     method: "POST",
     body: JSON.stringify(credentials),
+  });
+}
+
+export async function register(
+  data: RegisterData,
+): Promise<User> {
+  return apiClient<User>("/users", {
+    method: "POST",
+    body: JSON.stringify(data),
   });
 }
 

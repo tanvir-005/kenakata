@@ -1,9 +1,15 @@
-import { ProductGallery } from "@/components/product/product-gallery";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProduct } from "@/lib/api/products";
-import { Container } from "@/components/ui/container";
+
 import { AddToCartButton } from "@/components/cart/add-to-cart-button";
+import { ProductGallery } from "@/components/product/product-gallery";
+import { ProductGrid } from "@/components/product/product-grid";
+import { Container } from "@/components/ui/container";
+
+import {
+  getProduct,
+  getRelatedProducts,
+} from "@/lib/api/products";
 
 interface ProductPageProps {
   params: Promise<{
@@ -29,8 +35,11 @@ export default async function ProductPage({
     notFound();
   }
 
+  const relatedProducts = await getRelatedProducts(productId);
+
   return (
     <main>
+      {/* Product details */}
       <section className="py-10 sm:py-16">
         <Container>
           <Link
@@ -74,6 +83,29 @@ export default async function ProductPage({
           </div>
         </Container>
       </section>
+
+      {/* Related products */}
+      {relatedProducts.length > 0 && (
+        <section className="border-t border-neutral-200 py-16 dark:border-neutral-800 sm:py-20">
+          <Container>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-neutral-500">
+                You may also like
+              </p>
+
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+                Related products
+              </h2>
+            </div>
+
+            <div className="mt-10">
+              <ProductGrid
+                products={relatedProducts.slice(0, 4)}
+              />
+            </div>
+          </Container>
+        </section>
+      )}
     </main>
   );
 }

@@ -6,6 +6,12 @@ export interface CartState {
 
 export type CartAction =
   | {
+      type: "HYDRATE_CART";
+      payload: {
+        items: CartItem[];
+      };
+    }
+  | {
       type: "ADD_ITEM";
       payload: {
         product: CartItem["product"];
@@ -42,6 +48,11 @@ export function cartReducer(
   action: CartAction,
 ): CartState {
   switch (action.type) {
+    case "HYDRATE_CART":
+      return {
+        items: action.payload.items,
+      };
+
     case "ADD_ITEM": {
       const existingItem = state.items.find(
         (item) => item.product.id === action.payload.product.id,

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ImageOff } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface ProductImageProps {
   src: string;
@@ -35,23 +35,6 @@ export function ProductImage({
 
   const validSrc = isValidImageSrc(src);
 
-  useEffect(() => {
-    setIsLoading(true);
-    setHasError(false);
-
-    if (!validSrc) {
-      setIsLoading(false);
-      return;
-    }
-
-    const timeout = setTimeout(() => {
-      setHasError(true);
-      setIsLoading(false);
-    }, 10000);
-
-    return () => clearTimeout(timeout);
-  }, [src, validSrc]);
-
   if (!validSrc || hasError) {
     return (
       <div className="flex h-full w-full items-center justify-center bg-neutral-100 dark:bg-neutral-900">
@@ -77,9 +60,7 @@ export function ProductImage({
         className={`object-cover transition-opacity duration-300 ${
           isLoading ? "opacity-0" : "opacity-100"
         }`}
-        onLoad={() => {
-          setIsLoading(false);
-        }}
+        onLoad={() => setIsLoading(false)}
         onError={() => {
           setIsLoading(false);
           setHasError(true);
