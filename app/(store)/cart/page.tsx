@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 import { CartItem } from "@/components/cart/cart-item";
 import { CartSummary } from "@/components/cart/cart-summary";
 import { EmptyCart } from "@/components/cart/empty-cart";
@@ -7,7 +9,27 @@ import { Container } from "@/components/ui/container";
 import { useCart } from "@/context/cart-context";
 
 export default function CartPage() {
-  const { items } = useCart();
+  const { items, isHydrated, selectAll } = useCart();
+  const hasInitializedSelection = useRef(false);
+
+  useEffect(() => {
+    if (!isHydrated || hasInitializedSelection.current) {
+      return;
+    }
+
+    hasInitializedSelection.current = true;
+
+    const buyNowProductId = sessionStorage.getItem(
+      "kenakata-buy-now-product",
+    );
+
+    if (buyNowProductId) {
+      sessionStorage.removeItem("kenakata-buy-now-product");
+      return;
+    }
+
+    selectAll();
+  }, [isHydrated, selectAll]);
 
   if (items.length === 0) {
     return (

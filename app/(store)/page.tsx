@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import { getCategories } from "@/lib/api/categories";
 import { getProducts } from "@/lib/api/products";
@@ -16,23 +17,17 @@ export default async function HomePage() {
   return (
     <main>
       {/* Hero */}
-      <section className="py-20">
+      <section className="py-8 sm:py-12">
         <Container>
-          <div className="max-w-3xl">
-            <p className="text-sm font-medium uppercase tracking-widest text-neutral-500">
-              KenaKata
-            </p>
-
-            <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-6xl">
-              Everything you need and even things you don&apos;t need
-              <br />
-              in one place.
-            </h1>
-
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-600 dark:text-neutral-400">
-              Discover products and enjoy a simple, modern shopping
-              experience.
-            </p>
+          <div className="relative h-[320px] overflow-hidden rounded-3xl bg-neutral-100 shadow-sm dark:bg-neutral-900 sm:h-[480px] lg:h-[560px]">
+            <Image
+              src="/images/banner.png"
+              alt="KenaKata shopping with thoughtful delivery"
+              fill
+              priority
+              sizes="(max-width: 640px) 100vw, (max-width: 1280px) 92vw, 1200px"
+              className="object-cover"
+            />
           </div>
         </Container>
       </section>

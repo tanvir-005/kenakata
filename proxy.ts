@@ -8,8 +8,7 @@ export function proxy(request: NextRequest) {
 
   const isProtectedRoute = protectedRoutes.some(
     (route) =>
-      pathname === route ||
-      pathname.startsWith(`${route}/`),
+      pathname === route || pathname.startsWith(`${route}/`),
   );
 
   if (!isProtectedRoute) {
@@ -21,15 +20,8 @@ export function proxy(request: NextRequest) {
   )?.value;
 
   if (!accessToken) {
-    const loginUrl = new URL(
-      "/login",
-      request.url,
-    );
-
-    loginUrl.searchParams.set(
-      "redirect",
-      pathname,
-    );
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", pathname);
 
     return NextResponse.redirect(loginUrl);
   }
@@ -38,7 +30,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/checkout/:path*",
-  ],
+  matcher: ["/checkout/:path*"],
 };

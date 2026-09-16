@@ -10,13 +10,28 @@ import { useCart } from "@/context/cart-context";
 import type { CheckoutFormData } from "@/lib/validations/checkout";
 
 export function CheckoutContent() {
-  const { items, itemCount, subtotal, clearCart } = useCart();
+  const {
+    items,
+    selectedItems,
+    selectedItemCount,
+    selectedSubtotal,
+    removeSelectedItems,
+    selectAll,
+    clearSelection,
+  } = useCart();
 
   const [deliveryData, setDeliveryData] =
     useState<CheckoutFormData | null>(null);
 
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
+
+  const remainingItems = items.filter(
+    (item) =>
+      !selectedItems.some(
+        (selected) => selected.product.id === item.product.id,
+      ),
+  );
 
   if (orderPlaced) {
     return (
@@ -36,8 +51,7 @@ export function CheckoutContent() {
             </h1>
 
             <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-neutral-500 sm:text-base">
-              Your order has been placed successfully. Payment will be
-              collected when your order is delivered.
+              Your selected items have been placed successfully. Payment will be collected when your order is delivered.
             </p>
 
             <Link
@@ -77,6 +91,46 @@ export function CheckoutContent() {
     );
   }
 
+  if (selectedItems.length === 0) {
+    return (
+      <main className="py-10 sm:py-16">
+        <Container>
+          <div className="mx-auto max-w-lg rounded-2xl border border-dashed border-neutral-300 p-10 text-center dark:border-neutral-700">
+            <p className="text-xs font-semibold uppercase tracking-widest text-neutral-500">
+              Nothing selected
+            </p>
+
+            <h1 className="mt-3 text-2xl font-semibold">
+              Choose items to checkout
+            </h1>
+
+            <p className="mt-3 text-sm text-neutral-500">
+              Select the products you want to order now, and keep the rest in your cart for later.
+            </p>
+
+            <div className="mt-6 flex justify-center gap-3">
+              <button
+                type="button"
+                onClick={selectAll}
+                className="rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-medium text-white dark:bg-white dark:text-neutral-950"
+              >
+                Select all
+              </button>
+
+              <button
+                type="button"
+                onClick={clearSelection}
+                className="rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium transition-colors hover:border-neutral-500 dark:border-neutral-700 dark:hover:border-neutral-500"
+              >
+                Keep cart as is
+              </button>
+            </div>
+          </div>
+        </Container>
+      </main>
+    );
+  }
+
   const handleDeliverySubmit = (data: CheckoutFormData) => {
     setDeliveryData(data);
   };
@@ -84,10 +138,9 @@ export function CheckoutContent() {
   const handlePlaceOrder = async () => {
     setIsPlacingOrder(true);
 
-    // Simulate a successful mock checkout.
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    clearCart();
+    removeSelectedItems();
     setIsPlacingOrder(false);
     setOrderPlaced(true);
   };
@@ -169,11 +222,11 @@ export function CheckoutContent() {
 
             <aside className="h-fit rounded-2xl border border-neutral-200 p-6 dark:border-neutral-800">
               <h2 className="text-lg font-semibold">
-                Order summary
+                Selected for this order
               </h2>
 
               <div className="mt-6 space-y-4">
-                {items.map((item) => (
+                {selectedItems.map((item) => (
                   <div
                     key={item.product.id}
                     className="flex justify-between gap-4 text-sm"
@@ -197,17 +250,32 @@ export function CheckoutContent() {
 
               <div className="mt-6 border-t border-neutral-200 pt-6 dark:border-neutral-800">
                 <div className="flex justify-between text-sm">
-                  <span className="text-neutral-500">
-                    Items
-                  </span>
-                  <span>{itemCount}</span>
+                  <span className="text-neutral-500">Items</span>
+                  <span>{selectedItemCount}</span>
                 </div>
 
                 <div className="mt-3 flex justify-between text-base font-semibold">
                   <span>Total</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>${selectedSubtotal.toFixed(2)}</span>
                 </div>
               </div>
+
+              {remainingItems.length > 0 && (
+                <div className="mt-8 border-t border-neutral-200 pt-6 dark:border-neutral-800">
+                  <h3 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                    Saved in cart
+                  </h3>
+
+                  <div className="mt-4 space-y-3 text-sm text-neutral-500">
+                    {remainingItems.map((item) => (
+                      <div key={item.product.id} className="flex items-center justify-between gap-3">
+                        <span className="truncate">{item.product.title}</span>
+                        <span>x{item.quantity}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </aside>
           </div>
         </Container>

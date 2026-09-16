@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Search } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { MobileNavigation } from "./mobile-navigation";
@@ -16,9 +17,19 @@ export function Header() {
 
             <Link
               href="/"
-              className="text-xl font-bold tracking-tight"
+              className="inline-flex items-center gap-2"
             >
-              KenaKata
+              <Image
+                src="/images/logo.png"
+                alt="KenaKata"
+                width={36}
+                height={36}
+                className="h-9 w-9 object-contain"
+                priority
+              />
+              <span className="text-xl font-bold tracking-tight">
+                KenaKata
+              </span>
             </Link>
 
             <nav

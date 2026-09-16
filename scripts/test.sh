@@ -13,6 +13,7 @@ fi
 
 BASE_URL="${TEST_BASE_URL:-http://localhost:3000}"
 API_URL="${NEXT_PUBLIC_API_URL:-}"
+PRODUCT_ID="${SINGLE_PRODUCT_ID:-}"
 EMAIL="${TEST_EMAIL:-}"
 PASSWORD="${TEST_PASSWORD:-}"
 
@@ -91,10 +92,13 @@ STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
 
 check_status "Categories API works" "200" "$STATUS"
 
-STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-  "$API_URL/products/10")
-
-check_status "Single product API works" "200" "$STATUS"
+if [ -n "$PRODUCT_ID" ]; then
+  STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+    "$API_URL/products/$PRODUCT_ID")
+  check_status "Single product API works" "200" "$STATUS"
+else
+  fail "Single product API works — no valid product ID found in API response"
+fi
 
 echo
 

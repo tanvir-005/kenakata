@@ -2,6 +2,7 @@ import type { CartItem } from "@/types";
 
 export interface CartState {
   items: CartItem[];
+  isHydrated: boolean;
 }
 
 export type CartAction =
@@ -41,6 +42,7 @@ export type CartAction =
 
 export const initialCartState: CartState = {
   items: [],
+  isHydrated: false,
 };
 
 export function cartReducer(
@@ -51,6 +53,7 @@ export function cartReducer(
     case "HYDRATE_CART":
       return {
         items: action.payload.items,
+        isHydrated: true,
       };
 
     case "ADD_ITEM": {
@@ -61,25 +64,26 @@ export function cartReducer(
       if (existingItem) {
         return {
           ...state,
-          items: state.items.map((item) =>
-            item.product.id === action.payload.product.id
-              ? {
-                  ...item,
-                  quantity: item.quantity + 1,
-                }
-              : item,
-          ),
+          items: [
+            {
+              ...existingItem,
+              quantity: existingItem.quantity + 1,
+            },
+            ...state.items.filter(
+              (item) => item.product.id !== action.payload.product.id,
+            ),
+          ],
         };
       }
 
       return {
         ...state,
         items: [
-          ...state.items,
           {
             product: action.payload.product,
             quantity: 1,
           },
+          ...state.items,
         ],
       };
     }
@@ -121,7 +125,10 @@ export function cartReducer(
       };
 
     case "CLEAR_CART":
-      return initialCartState;
+      return {
+        items: [],
+        isHydrated: state.isHydrated,
+      };
 
     default:
       return state;

@@ -15,12 +15,24 @@ export function CartItem({ item }: CartItemProps) {
     increaseQuantity,
     decreaseQuantity,
     removeItem,
+    isSelected,
+    toggleSelect,
   } = useCart();
 
   const image = item.product.images[0];
 
   return (
     <article className="flex gap-4 border-b border-neutral-200 py-6 dark:border-neutral-800">
+      <label className="flex items-center pt-2">
+        <input
+          type="checkbox"
+          checked={isSelected(item.product.id)}
+          onChange={() => toggleSelect(item.product.id)}
+          className="h-4 w-4 rounded border-neutral-300 text-neutral-950 focus:ring-neutral-950 dark:border-neutral-700 dark:bg-neutral-950 dark:text-white dark:focus:ring-white"
+          aria-label={`Select ${item.product.title} for checkout`}
+        />
+      </label>
+
       <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900">
         <ProductImage
           src={image ?? ""}
@@ -58,8 +70,9 @@ export function CartItem({ item }: CartItemProps) {
               onClick={() =>
                 decreaseQuantity(item.product.id)
               }
+              disabled={item.quantity === 1}
               aria-label={`Decrease quantity of ${item.product.title}`}
-              className="inline-flex h-8 w-8 items-center justify-center text-neutral-500 transition-colors hover:text-neutral-950 dark:hover:text-white"
+              className="inline-flex h-8 w-8 items-center justify-center text-neutral-500 transition-colors hover:text-neutral-950 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:text-neutral-500 dark:hover:text-white dark:disabled:hover:text-neutral-500"
             >
               <Minus className="h-3.5 w-3.5" />
             </button>

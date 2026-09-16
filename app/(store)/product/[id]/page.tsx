@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AddToCartButton } from "@/components/cart/add-to-cart-button";
+import { BuyNowButton } from "@/components/cart/buy-now-button";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { ProductGrid } from "@/components/product/product-grid";
 import { Container } from "@/components/ui/container";
@@ -78,7 +79,11 @@ export default async function ProductPage({
                 </p>
               </div>
 
-              <AddToCartButton product={product} />
+              <div className="mt-8 space-y-3">
+                <AddToCartButton product={product} />
+
+                <BuyNowButton product={product} />
+              </div>
             </div>
           </div>
         </Container>
