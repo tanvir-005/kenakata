@@ -56,7 +56,7 @@ export function CheckoutContent() {
                 </h2>
 
                 <p className="mt-2 text-sm text-neutral-500">
-                  We'=&apos;ll use this information for your order.
+                  We&apos;ll use this information for your order.
                 </p>
               </div>
             ) : (

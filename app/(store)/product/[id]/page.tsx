@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { ProductGallery } from "@/components/product/product-gallery";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProduct } from "@/lib/api/products";
@@ -29,8 +29,6 @@ export default async function ProductPage({
     notFound();
   }
 
-  const image = product.images[0];
-
   return (
     <main>
       <section className="py-10 sm:py-16">
@@ -43,22 +41,10 @@ export default async function ProductPage({
           </Link>
 
           <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-16">
-            <div className="relative aspect-square overflow-hidden rounded-3xl bg-neutral-100 dark:bg-neutral-900">
-              {image ? (
-                <Image
-                  src={image}
-                  alt={product.title}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center text-sm text-neutral-500">
-                  Image unavailable
-                </div>
-              )}
-            </div>
+            <ProductGallery
+              images={product.images}
+              title={product.title}
+            />
 
             <div className="flex flex-col justify-center">
               <p className="text-xs font-semibold uppercase tracking-widest text-neutral-500">
