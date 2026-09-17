@@ -35,6 +35,21 @@ export function AuthProvider({
   const [isLoading, setIsLoading] = useState(true);
 
   const refreshSession = useCallback(async () => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const hasAccessToken = document.cookie
+      .split("; ")
+      .some((cookie) =>
+        cookie.startsWith("kenakata-access-token="),
+      );
+
+    if (!hasAccessToken) {
+      setUser(null);
+      return;
+    }
+
     try {
       const response = await fetch("/api/auth/session", {
         method: "GET",
