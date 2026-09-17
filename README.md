@@ -33,6 +33,8 @@ The codebase is organized as follows:
 - public/images/ contains logo and hero section banner
 - next.config.ts has the logic to allow all image URL from any HTTP or HTTPS
 
+- Tradeoff: Entire wishlist and cart is stored in local storage resulting same account from different browser experiencing different cart items and different account in same browser seeing the same cart.
+
 ## Local setup
 
 1. Install dependencies:
