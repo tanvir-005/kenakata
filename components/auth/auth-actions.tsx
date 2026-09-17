@@ -4,10 +4,12 @@ import Link from "next/link";
 import { LogOut, UserRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
+import { useCart } from "@/context/cart-context";
 
 export function AuthActions() {
   const router = useRouter();
   const { user, isLoading, logout } = useAuth();
+  const { clearCart } = useCart();
 
   if (isLoading) {
     return (
@@ -27,6 +29,7 @@ export function AuthActions() {
   }
 
   const handleLogout = async () => {
+    clearCart();
     await logout();
     router.push("/");
     router.refresh();

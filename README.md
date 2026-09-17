@@ -20,20 +20,19 @@ KenaKata storefront is built with React + Next.js App Router and Platzi Fake API
 
 The codebase is organized as follows:
 
-- app/ contains the views with routing
-- parentheses (for example, (store)) is used to ommit from routing
-- Square / box brackets (for example, [id]) is used to facilitate slug
-- contents inside app/ are divided as layout, page, loading, and error
-- components/ contains reusable UI components and blocks
-- context/ stores client-side state for components
-- lib/ mainly contains API clients, and some validation helpers
-- reducers/ the logic to change cart and wishlist are contained inside this folder
-- types/ TS types are defined here
-- scripts/ contains some Bash scripts to run in terminal to test the project
-- public/images/ contains logo and hero section banner
-- next.config.ts has the logic to allow all image URL from any HTTP or HTTPS
-
-- Tradeoff: Entire wishlist and cart is stored in local storage resulting same account from different browser experiencing different cart items and different account in same browser seeing the same cart.
+- app/ contains the views with routing\
+- parentheses (for example, (store)) is used to ommit from routing\
+- Square / box brackets (for example, [id]) is used to facilitate slug\
+- contents inside app/ are divided as layout, page, loading, and error\
+- components/ contains reusable UI components and blocks\
+- context/ stores client-side state for components\
+- lib/ mainly contains API clients, and some validation helpers\
+- reducers/ the logic to change cart and wishlist are contained inside this folder\
+- types/ TS types are defined here\
+- scripts/ contains some Bash scripts to run in terminal to test the project\
+- public/images/ contains logo and hero section banner\
+- next.config.ts has the logic to allow all image URL from any HTTP or HTTPS\
+- Tradeoff: Entire wishlist and cart is stored in local storage resulting same account from different browser experiencing different cart items and to maintain cart mixup of different accounts carts are cleared on logout.
 
 ## Local setup
 
