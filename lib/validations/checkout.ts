@@ -2,7 +2,7 @@ import { z } from "zod";
 
 // Regular Expressions
 const nameRegex = /^[a-zA-Z\s'-]+$/;
-const phoneRegex = /^\+?[0-9]\d{1,14}$/; 
+const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\./0-9]*$/; 
 const postalRegex = /^[a-zA-Z0-9\s-]{3,10}$/; // Standard alphanumeric postal codes
 
 export const checkoutSchema = z.object({
