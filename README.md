@@ -47,7 +47,7 @@ The codebase is organized as follows:
 - Route groups are used to structure sections without affecting the final URL structure.
 - Loading and error boundaries help create a cleaner experience when fetching data or handling failures.
 
-This approach reduces unnecessary client-side hydration and keeps the UI responsive without overloading the browser. Interactive features are only marked as client-side where needed, which helps keep bundle size and runtime complexity under control.
+This approach reduces unnecessary client-side hydration.
 
 The project also uses optimized images and graceful fallbacks for missing or invalid product images. That improves perceived quality and avoids broken UI states when external images fail to load.
 
