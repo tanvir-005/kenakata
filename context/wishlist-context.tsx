@@ -76,7 +76,12 @@ export function WishlistProvider({
       type: "HYDRATE_WISHLIST",
       payload: { items: storedWishlist },
     });
-    setIsHydrated(true);
+
+    const frameId = window.requestAnimationFrame(() => {
+      setIsHydrated(true);
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
   }, []);
 
   useEffect(() => {
