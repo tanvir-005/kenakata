@@ -1,7 +1,10 @@
 "use client";
 
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+
+import { useAuth } from "@/context/auth-context";
 import {
   checkoutSchema,
   type CheckoutFormData,
@@ -14,21 +17,36 @@ interface CheckoutFormProps {
 export function CheckoutForm({
   onSubmit,
 }: CheckoutFormProps) {
+  const { user } = useAuth();
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
+      fullName: user?.name ?? "",
+      email: user?.email ?? "",
       phone: "",
       address: "",
       city: "",
       postalCode: "",
     },
   });
+
+  useEffect(() => {
+    setValue("fullName", user?.name ?? "", {
+      shouldDirty: false,
+      shouldTouch: false,
+      shouldValidate: false,
+    });
+    setValue("email", user?.email ?? "", {
+      shouldDirty: false,
+      shouldTouch: false,
+      shouldValidate: false,
+    });
+  }, [user, setValue]);
 
   return (
     <form

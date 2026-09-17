@@ -21,8 +21,7 @@ export function Footer() {
             </Link>
 
             <p className="mt-3 max-w-sm text-sm leading-6 text-neutral-500">
-              A modern shopping experience built for discovering
-              products you love.
+              A convenient online shopping experience built just for you.
             </p>
           </div>
 
@@ -46,14 +45,13 @@ export function Footer() {
             <h2 className="text-sm font-semibold">KenaKata</h2>
 
             <p className="mt-4 text-sm leading-6 text-neutral-500">
-              Quality products. Simple shopping. Thoughtful
-              experience.
+              Whether you need it or not, we have it.
             </p>
           </div>
         </div>
 
         <div className="border-t border-neutral-200 py-5 text-sm text-neutral-500 dark:border-neutral-800">
-          © {new Date().getFullYear()} KenaKata. All rights reserved.
+          KenaKata - made using React and Next.
         </div>
       </Container>
     </footer>
