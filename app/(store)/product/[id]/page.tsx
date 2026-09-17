@@ -6,6 +6,7 @@ import { BuyNowButton } from "@/components/cart/buy-now-button";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { ProductGrid } from "@/components/product/product-grid";
 import { Container } from "@/components/ui/container";
+import { ProductReviews } from "@/components/product/product-reviews";
 
 import {
   getProduct,
@@ -88,6 +89,8 @@ export default async function ProductPage({
           </div>
         </Container>
       </section>
+
+      <ProductReviews productId={product.id} />
 
       {/* Related products */}
       {relatedProducts.length > 0 && (

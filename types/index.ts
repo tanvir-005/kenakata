@@ -4,3 +4,4 @@ export * from "./cart";
 export * from "./category";
 export * from "./product";
 export * from "./user";
+export type { Review } from "./review";
