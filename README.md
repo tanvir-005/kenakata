@@ -1,69 +1,37 @@
 # KenaKata
 
-KenaKata is a modern storefront built with Next.js App Router and the Platzi Fake API. It showcases a real-world e-commerce flow with product browsing, filtering, cart management, protected checkout, and session-aware authentication.
+KenaKata storefront is built with React + Next.js App Router and Platzi Fake APIs are used for data.
 
-## Project overview
+## Overview
 
-The app is designed as a production-style storefront with a clean shopping flow:
-
-- Home page with hero messaging, featured products, and category highlights
-- Product listing page with search, sorting, filters, pagination, and empty/error states
-- Product detail page with gallery and related items
-- Cart experience with persistent local state and quantity controls
-- Checkout flow protected by authentication and form validation
-- Auth flow for login, registration, session refresh, and logout
-- Responsive UI with dark mode support
+- Home page with hero section, featured products and featured categories
+- Products page with all products and search, filter and sorting option
+- Product search requires hitting enter to search
+- Products and Categories are fetched from the Fake APIs.
+- Missing images are handled with 'image unavailable' placeholder.
+- Suspenses are used while fetching data
+- Wishlist option added to store products in local storage
+- Add to Cart (using local storage) option facilitates storing data even when user is not logged in
+- Checkout page is protected by middleware (proxy) to force user log in
+- Add to cart and buy now button is implemented so that 'Buy now' adds that item to cart, deselect all other cart items, and shows cart where Cart visit selects all items in the cart for checkout
+- Payment integration is not added (handled by facilitating COD)
 
 ## Architecture
 
-The codebase is organized around a clear separation of responsibilities:
+The codebase is organized as follows:
 
-- app/ contains route-level pages and route groups for public and authenticated views
-- components/ contains reusable storefront UI and form blocks
-- context/ stores client-side state for auth and cart
-- lib/ contains API clients and validation helpers
-- reducers/ keeps cart transitions predictable and testable
-- types/ centralizes shared TypeScript contracts
-
-## Rendering strategy decisions
-
-This project uses a hybrid server/client model that matches the assignment goals:
-
-- Server components fetch products, categories, and session-protected data from the API
-- Client components manage interactive behaviors such as filters, cart actions, and checkout form state
-- Dynamic routes such as /product/[id] and protected route checks are handled with Next.js App Router patterns
-- Loading and error boundaries are used on the products catalogue to provide graceful UX during failures
-
-This balances performance and maintainability while keeping the storefront fast and responsive.
-
-## Tradeoffs made
-
-- Client-side cart persistence is implemented with localStorage to keep the experience smooth without server infrastructure
-- Authentication is cookie-based and session-aware, which keeps the app lightweight and aligned with Next.js App Router patterns
-- Product filtering is handled with URL search params so state is shareable and user-friendly for refreshes/bookmarks
-- The checkout flow is intentionally mocked to demonstrate a secure UX without requiring a real payment provider
-
-## Performance considerations
-
-- Product and category data is loaded only as needed for each route
-- Image rendering uses the framework’s image optimization patterns where appropriate
-- Lists are limited and paginated to avoid large payloads from the API
-- The cart and auth providers update only the necessary state rather than re-rendering the full app tree
-
-## Challenges faced
-
-- Matching server-side and client-side auth state across route transitions
-- Supporting a real e-commerce workflow without introducing a backend service
-- Keeping the UI responsive while working with remote product data and route-based filters
-- Designing a simple but production-like architecture around a public fake API
-
-## Future improvements
-
-- Add a real admin dashboard for product/category CRUD
-- Add unit or integration tests with Vitest or Playwright
-- Add wishlist and product review features
-- Implement a real payment integration and inventory checks
-- Add caching and revalidation strategies for production deployment
+- app/ contains the views with routing
+- parentheses (for example, (store)) is used to ommit from routing
+- Square / box brackets (for example, [id]) is used to facilitate slug
+- contents inside app/ are divided as layout, page, loading, and error
+- components/ contains reusable UI components and blocks
+- context/ stores client-side state for components
+- lib/ mainly contains API clients, and some validation helpers
+- reducers/ the logic to change cart and wishlist are contained inside this folder
+- types/ TS types are defined here
+- scripts/ contains some Bash scripts to run in terminal to test the project
+- public/images/ contains logo and hero section banner
+- next.config.ts has the logic to allow all image URL from any HTTP or HTTPS
 
 ## Local setup
 
@@ -87,40 +55,5 @@ npm run dev
 
 4. Open the app in your browser:
 
-```bash
-http://localhost:3000
-```
-
-## Environment variables
-
-Create a .env.local file with values similar to the following:
-
-```bash
-NEXT_PUBLIC_API_URL=https://api.escuelajs.co/api/v1
-TEST_BASE_URL=http://localhost:3000
-TEST_EMAIL=
-TEST_PASSWORD=
-```
-
-Notes:
-
-- NEXT_PUBLIC_API_URL is the base URL for the storefront data API
-- TEST_BASE_URL is used by the project smoke test script
-- TEST_EMAIL and TEST_PASSWORD are used when running the shell-based auth checks
-
-## Available scripts
-
-```bash
-npm run dev
-npm run build
-npm run lint
-bash scripts/test.sh
-```
-
-## Deployment
-
-This app is suitable for deployment on Vercel or any Node-compatible hosting provider. After deployment, set the same environment variables in the host dashboard and ensure your public domain points at the app.
-
-## Submission notes
-
-The project is structured to meet the capstone brief requirements for a modern storefront, including routed pages, authentication, cart state, validation, and a polished UI across mobile and desktop layouts.
+If you run the above commands correctly you should be able to see the website at: [http://localhost:3000](http://localhost:3000)
+or you can see the live from here at: [https://kenakata-gules.vercel.app/](https://kenakata-gules.vercel.app/)
