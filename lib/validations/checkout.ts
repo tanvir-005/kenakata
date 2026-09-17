@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 // Regular Expressions
-const nameRegex = /^[a-zA-Z\s'-]+$/; // accepts letters and hyphen
-const phoneRegex = /^\+?[1-9]\d{1,14}$/; // E.164 international standard format
+const nameRegex = /^[a-zA-Z\s'-]+$/;
+const phoneRegex = /^\+?[0-9]\d{1,14}$/; 
 const postalRegex = /^[a-zA-Z0-9\s-]{3,10}$/; // Standard alphanumeric postal codes
 
 export const checkoutSchema = z.object({
@@ -23,7 +23,7 @@ export const checkoutSchema = z.object({
   phone: z
     .string()
     .trim()
-    .regex(phoneRegex, "Please enter a valid phone number (e.g., +1234567890)."),
+    .regex(phoneRegex, "Please enter a valid phone number (e.g., +0123456789)."),
 
   address: z
     .string()
