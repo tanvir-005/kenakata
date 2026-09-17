@@ -73,6 +73,11 @@ export function AuthProvider({
         method: "POST",
       });
     } finally {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("kenakata-cart");
+        localStorage.removeItem("kenakata-orders");
+        sessionStorage.removeItem("kenakata-buy-now-product");
+      }
       setUser(null);
     }
   }, []);

@@ -54,12 +54,21 @@ export function CheckoutContent() {
               Your selected items have been placed successfully. Payment will be collected when your order is delivered.
             </p>
 
-            <Link
-              href="/products"
-              className="mt-8 inline-flex rounded-full bg-neutral-950 px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-neutral-950"
-            >
-              Continue shopping
-            </Link>
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link
+                href="/orders"
+                className="inline-flex rounded-full bg-neutral-950 px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-neutral-950"
+              >
+                View my orders
+              </Link>
+
+              <Link
+                href="/products"
+                className="inline-flex rounded-full border border-neutral-300 px-6 py-3 text-sm font-medium text-neutral-700 transition-colors hover:border-neutral-500 dark:border-neutral-700 dark:text-neutral-200"
+              >
+                Continue shopping
+              </Link>
+            </div>
           </div>
         </Container>
       </main>
@@ -139,6 +148,39 @@ export function CheckoutContent() {
     setIsPlacingOrder(true);
 
     await new Promise((resolve) => setTimeout(resolve, 800));
+
+    if (typeof window !== "undefined" && deliveryData) {
+      const order = {
+        id: crypto.randomUUID(),
+        orderNumber: `KK-${Date.now().toString().slice(-8)}`,
+        paymentMethod: "Cash on Delivery",
+        total: selectedSubtotal,
+        placedAt: new Date().toISOString(),
+        date: new Date().toLocaleDateString(),
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        customer: {
+          fullName: deliveryData.fullName,
+          email: deliveryData.email,
+          phone: deliveryData.phone,
+          address: deliveryData.address,
+          city: deliveryData.city,
+          postalCode: deliveryData.postalCode,
+        },
+        items: selectedItems,
+      };
+
+      const savedOrders = JSON.parse(
+        localStorage.getItem("kenakata-orders") ?? "[]",
+      );
+
+      localStorage.setItem(
+        "kenakata-orders",
+        JSON.stringify([order, ...savedOrders]),
+      );
+    }
 
     removeSelectedItems();
     setIsPlacingOrder(false);

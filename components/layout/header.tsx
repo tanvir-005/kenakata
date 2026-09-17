@@ -45,6 +45,13 @@ export function Header() {
               </Link>
 
               <Link
+                href="/orders"
+                className="text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white"
+              >
+                Orders
+              </Link>
+
+              <Link
                 href="/categories"
                 className="text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white"
               >
