@@ -2,7 +2,7 @@
 
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Category } from "@/types";
 
 interface ProductFiltersProps {
@@ -18,6 +18,12 @@ export function ProductFilters({
 
   const [search, setSearch] = useState(
     searchParams.get("search") ?? "",
+  );
+  const [minPriceInput, setMinPriceInput] = useState(
+    searchParams.get("minPrice") ?? "",
+  );
+  const [maxPriceInput, setMaxPriceInput] = useState(
+    searchParams.get("maxPrice") ?? "",
   );
 
   const updateFilter = (
@@ -37,8 +43,45 @@ export function ProductFilters({
     router.push(`${pathname}?${params.toString()}`);
   };
 
+  useEffect(() => {
+    const nextMinPrice = minPriceInput.trim();
+    const nextMaxPrice = maxPriceInput.trim();
+    const currentMinPrice = searchParams.get("minPrice") ?? "";
+    const currentMaxPrice = searchParams.get("maxPrice") ?? "";
+
+    if (
+      nextMinPrice === currentMinPrice &&
+      nextMaxPrice === currentMaxPrice
+    ) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      if (nextMinPrice) {
+        params.set("minPrice", nextMinPrice);
+      } else {
+        params.delete("minPrice");
+      }
+
+      if (nextMaxPrice) {
+        params.set("maxPrice", nextMaxPrice);
+      } else {
+        params.delete("maxPrice");
+      }
+
+      params.delete("page");
+      router.push(`${pathname}?${params.toString()}`);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [maxPriceInput, minPriceInput, pathname, router, searchParams]);
+
   const clearFilters = () => {
     setSearch("");
+    setMinPriceInput("");
+    setMaxPriceInput("");
     router.push(pathname);
   };
 
@@ -137,12 +180,9 @@ export function ProductFilters({
               type="number"
               min="0"
               placeholder="Min"
-              value={searchParams.get("minPrice") ?? ""}
+              value={minPriceInput}
               onChange={(event) =>
-                updateFilter(
-                  "minPrice",
-                  event.target.value,
-                )
+                setMinPriceInput(event.target.value)
               }
               className="h-10 min-w-0 w-full rounded-xl border border-neutral-200 bg-transparent px-3 text-sm outline-none focus:border-neutral-500 dark:border-neutral-700"
             />
@@ -151,12 +191,9 @@ export function ProductFilters({
               type="number"
               min="0"
               placeholder="Max"
-              value={searchParams.get("maxPrice") ?? ""}
+              value={maxPriceInput}
               onChange={(event) =>
-                updateFilter(
-                  "maxPrice",
-                  event.target.value,
-                )
+                setMaxPriceInput(event.target.value)
               }
               className="h-10 min-w-0 w-full rounded-xl border border-neutral-200 bg-transparent px-3 text-sm outline-none focus:border-neutral-500 dark:border-neutral-700"
             />

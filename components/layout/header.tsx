@@ -10,7 +10,7 @@ import { WishlistBadge } from "@/components/wishlist/wishlist-badge";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b border-neutral-200/80 bg-white/90 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/90">
+    <header className="sticky top-0 z-50 border-b border-neutral-200/80 bg-white/65 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/65">
       <Container>
         <div className="relative flex h-16 items-center justify-between gap-6">
           <div className="flex items-center gap-8">
