@@ -6,6 +6,7 @@ import { MobileNavigation } from "./mobile-navigation";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { CartBadge } from "@/components/cart/cart-badge";
 import { AuthActions } from "@/components/auth/auth-actions";
+import { WishlistBadge } from "@/components/wishlist/wishlist-badge";
 
 export function Header() {
   return (
@@ -64,7 +65,9 @@ export function Header() {
             <ThemeToggle />
             <AuthActions />
 
+            <WishlistBadge />
             <CartBadge />
+
           </div>
         </div>
       </Container>

@@ -7,6 +7,7 @@ import { ProductGallery } from "@/components/product/product-gallery";
 import { ProductGrid } from "@/components/product/product-grid";
 import { Container } from "@/components/ui/container";
 import { ProductReviews } from "@/components/product/product-reviews";
+import { WishlistButton } from "@/components/wishlist/wishlist-button";
 
 import {
   getProduct,
@@ -62,13 +63,19 @@ export default async function ProductPage({
                 {product.category.name}
               </p>
 
-              <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-                {product.title}
-              </h1>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+                    {product.title}
+                  </h1>
 
-              <p className="mt-5 text-2xl font-semibold">
-                ${product.price.toFixed(2)}
-              </p>
+                  <p className="mt-5 text-2xl font-semibold">
+                    ${product.price.toFixed(2)}
+                  </p>
+                </div>
+
+                <WishlistButton product={product} />
+              </div>
 
               <div className="mt-8 border-t border-neutral-200 pt-8 dark:border-neutral-800">
                 <h2 className="text-sm font-semibold">

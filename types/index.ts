@@ -5,3 +5,4 @@ export * from "./category";
 export * from "./product";
 export * from "./user";
 export type { Review } from "./review";
+export type { WishlistItem } from "./wishlist";
