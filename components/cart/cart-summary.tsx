@@ -1,9 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
 import { useCart } from "@/context/cart-context";
 
 export function CartSummary() {
+  const router = useRouter();
+  const { user } = useAuth();
   const {
     itemCount,
     subtotal,
@@ -13,6 +17,15 @@ export function CartSummary() {
     selectAll,
     clearSelection,
   } = useCart();
+
+  const handleCheckout = () => {
+    if (!user) {
+      router.push("/login?redirect=/checkout");
+      return;
+    }
+
+    router.push("/checkout");
+  };
 
   return (
     <aside className="rounded-2xl border border-neutral-200 p-6 dark:border-neutral-800">
@@ -81,12 +94,13 @@ export function CartSummary() {
         </span>
       </div>
 
-      <Link
-        href="/checkout"
+      <button
+        type="button"
+        onClick={handleCheckout}
         className="mt-6 flex h-11 w-full items-center justify-center rounded-full bg-neutral-950 px-5 text-sm font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
       >
         Proceed to checkout
-      </Link>
+      </button>
     </aside>
   );
 }

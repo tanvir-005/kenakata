@@ -7,6 +7,7 @@ import {
   useEffect,
   useMemo,
   useReducer,
+  useState,
 } from "react";
 import type { ReactNode } from "react";
 
@@ -19,6 +20,7 @@ import {
 interface WishlistContextValue {
   items: WishlistItem[];
   itemCount: number;
+  isHydrated: boolean;
   addToWishlist: (product: Product) => void;
   removeFromWishlist: (productId: number) => void;
   toggleWishlist: (product: Product) => void;
@@ -64,18 +66,29 @@ export function WishlistProvider({
   const [state, dispatch] = useReducer(
     wishlistReducer,
     initialWishlistState,
-    (initialState) => ({
-      ...initialState,
-      items: loadWishlist(),
-    }),
   );
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
+    const storedWishlist = loadWishlist();
+
+    dispatch({
+      type: "HYDRATE_WISHLIST",
+      payload: { items: storedWishlist },
+    });
+    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
     localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify(state.items),
     );
-  }, [state.items]);
+  }, [isHydrated, state.items]);
 
   const addToWishlist = useCallback((product: Product) => {
     dispatch({
@@ -116,6 +129,7 @@ export function WishlistProvider({
     () => ({
       items: state.items,
       itemCount: state.items.length,
+      isHydrated,
       addToWishlist,
       removeFromWishlist,
       toggleWishlist,
@@ -124,6 +138,7 @@ export function WishlistProvider({
     }),
     [
       state.items,
+      isHydrated,
       addToWishlist,
       removeFromWishlist,
       toggleWishlist,

@@ -39,21 +39,11 @@ export function AuthProvider({
       return;
     }
 
-    const hasAccessToken = document.cookie
-      .split("; ")
-      .some((cookie) =>
-        cookie.startsWith("kenakata-access-token="),
-      );
-
-    if (!hasAccessToken) {
-      setUser(null);
-      return;
-    }
-
     try {
       const response = await fetch("/api/auth/session", {
         method: "GET",
         cache: "no-store",
+        credentials: "same-origin",
       });
 
       if (!response.ok) {
@@ -61,9 +51,8 @@ export function AuthProvider({
         return;
       }
 
-      const data: { user: User } = await response.json();
-
-      setUser(data.user);
+      const data: { user: User | null } = await response.json();
+      setUser(data.user ?? null);
     } catch {
       setUser(null);
     }
